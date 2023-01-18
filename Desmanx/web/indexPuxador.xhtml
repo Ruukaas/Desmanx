@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" > 
+    <h:head>
+        <title>Puxador Main Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+
+        <b:modal id="modalCadastro" style-class="modalCad"
+                 title="'Cadastro de Cabrito" size="100">
+
+            <b:form>
+                <b:panelGrid columns="2">
+                    <p:outputLabel value="Selecione o modelo"/>
+                     <!--converter="modeloConverter"-->
+                    <p:selectOneMenu id="option"  value="#{selectedModel}"  appendTo="@(modalCad)">
+                        <c:forEach var="modelo" items="#{modeloController.readAllModelo()}">
+                            <f:selectItem itemLabel="#{modelo.nome}" itemValue="#{modelo.codigo}"/>
+                        </c:forEach>
+                    </p:selectOneMenu>
+
+
+                </b:panelGrid>
+                <p:commandButton value="Cadastrar"  onclick="#{cabritoController.inserir(loginController.puxadorLogado,selectedModel)}"
+
+                                 />
+                <b:button value="cancelar" dismiss="modal" />
+
+            </b:form>
+
+        </b:modal>
+
+        <b:form id="formPux">
+            <p:commandButton value="Cadastrar Cabrito" oncomplete="$('.modalCad').modal('show')" ajax='true' update=":modalCadastro"/>
+            <p:commandButton value="Sair" action="#{loginController.logout()}"/>
+            <b:dataTable var="item" value="#{cabritoController.readCabritoCurrentPuxador()}">
+                <b:dataTableColumn value="#{item.data_Roubo}"/>
+                <b:dataTableColumn value="#{item.modelo.nome}"/>
+                <b:dataTableColumn value="#{item.isCabritoFinished}" label="Cabrito Finalizado"/>
+            </b:dataTable>
+
+
+        </b:form>
+
+
+
+    </h:body>
+</html>

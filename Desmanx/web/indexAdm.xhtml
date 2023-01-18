@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" > 
+    <h:head>
+        <title>Administrador Main Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <b:modal id="modalView" style-class="modalView"
+                 title="'Visualização de Desmanx " size="300">
+
+            <b:panelGrid columns="2">
+                <h:outputText value="Código"/>
+                <h:outputText value="#{desmanxController.desmanx.codigo}"/>
+
+                <h:outputText value="Data do desmanche"/>
+                <h:outputText value="#{desmanxController.desmanx.data_desmanche}"/>
+
+                <h:outputText value="Puxador"/>
+                <h:outputText value="#{desmanxController.desmanx.cabrito.puxador.nome}"/>
+
+                <h:outputText value="Modelo"/>
+                <h:outputText value="#{desmanxController.desmanx.cabrito.modelo.nome}"/>
+
+            </b:panelGrid>
+            <h:outputText value="Peças reitradas"/>
+            <b:panelGrid columns="3">
+                <h:outputText value='Nome'/>
+                <h:outputText value='Quantidade'/>
+                <h:outputText value='Avaria'/>
+                <c:forEach var="item" items="#{desmanxController.desmanx.itemPeças}">
+                    <h:outputText value="#{item.peça.nome}"/>
+                    <h:outputText value="#{item.quantidade}"/>
+                    <h:outputText value="#{item.avaria}"/>
+                </c:forEach>
+            </b:panelGrid>
+
+
+        </b:modal>
+
+        <b:modal id="modalDesmanx" style-class="modalDesmanx"
+                 title="Cadastro de Desmanx " size="300">
+
+            <b:form>
+                <b:panelGrid columns="3">
+                    <h:outputText value='Nome'/>
+                    <h:outputText value='Quantidade'/>
+                    <h:outputText value='Avaria'/>
+                    <c:forEach var="item" items="#{desmanxController.desmanx.itemPeças}">
+                        <h:outputText value="#{item.peça.nome}"/>
+                        <b:inputText value="#{item.quantidade}"/>
+                        <b:inputText value="#{item.avaria}"/>
+                    </c:forEach>
+                </b:panelGrid>
+                <b:commandButton value="Finalizar"
+                                 action="#{desmanxController.inserir()}"/>
+                <b:button value="cancelar" dismiss="modal" />
+            </b:form>
+
+        </b:modal>
+        <h2>Desmanx não finalizados</h2>
+        <b:form id="formDesmanxNotFinished">
+            <p:commandButton value="Sair" action="#{loginController.logout()}"/>
+            <b:dataTable var="item" value="#{cabritoController.readAllCabritoNaoFinalizado()}" select="true" selection-mode="single">
+                <b:dataTableColumn value="#{item.data_Roubo}"/> 
+                <b:dataTableColumn value="#{item.modelo.nome}"/> 
+                <b:dataTableColumn value="#{item.isCabritoFinished}" label="Cabrito Finalizado"/> 
+                <b:dataTableColumn>
+                    <p:commandButton value="Realizar Desmanx" oncomplete="$('#modalDesmanx').modal('show')"
+                                     update=":modalDesmanx" ajax="true" 
+                                     actionListener="#{desmanxController.iniciarDesmanx(item)}">
+                    </p:commandButton>
+                </b:dataTableColumn>
+            </b:dataTable>
+        </b:form>
+
+        <h2>Desmanx finalizados</h2>
+        <b:form id="formDesmanxFinished">
+            <b:dataTable var="item" value="#{cabritoController.readAllCabritoFinalizado()}" select="true" selection-mode="single">
+                <b:dataTableColumn value="#{item.data_Roubo}"/> 
+                <b:dataTableColumn value="#{item.modelo.nome}"/> 
+                <b:dataTableColumn value="#{item.isCabritoFinished}" label="Cabrito Finalizado"/> 
+                <b:dataTableColumn>
+                    <p:commandButton value="Visualizar Desmanx" oncomplete="$('#modalView').modal('show')"
+                                     update=":modalView" ajax="true" 
+                                     actionListener="#{desmanxController.viewDesmanxByCabrito(item)}">
+                    </p:commandButton>
+                </b:dataTableColumn>
+            </b:dataTable>
+        </b:form>
+
+    </h:body>
+</html>

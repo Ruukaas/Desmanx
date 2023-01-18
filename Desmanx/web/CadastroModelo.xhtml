@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro Modelo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <h:form id="formCadModelo">
+            
+            <p:fieldset legend="Cadastro Modelo">
+                
+                <p:panelGrid columns="2">
+               
+                    <h:outputText value="Nome"/>
+                    <h:inputText value="#{modeloController.modelo.nome}"/>
+                    
+                    <h:outputText value="Fabricante"/>
+                    <p:inputText  value="#{modeloController.modelo.fabricante}"/>
+                    
+                    <h:outputText value="Tipo"/>
+                    <p:inputText  value="#{modeloController.modelo.tipo}"/>
+                    
+                    <h:outputText value="Potencia do Motor"/>
+                    <p:inputText value="#{modeloController.modelo.potencia_Motor}" />
+                    
+                    <h:outputText value="Cilindrada do Motor"/>
+                    <p:inputText value="#{modeloController.modelo.cilindrada_motor}" />
+                    
+                </p:panelGrid>
+                
+                <p:commandButton value="Cadastrar" 
+                                 oncomplete="PF('widConfModelo').show()"
+                                 />
+                
+            </p:fieldset>
+           
+            <p:dialog id="confCadModelo" modal="true"
+                      widgetVar="widConfModelo">
+                <h:outputText value="Deseja realmente cadastrar este modelo?!"/><br/>
+                <p:commandButton value="sim" action="#{modeloController.inserir()}" 
+                                 oncomplete="PF('widConfModelo').hide()" update=':formCadModelo'/>
+                <p:commandButton value="não" oncomplete="PF('widConfModelo').hide()"/>
+            </p:dialog>
+            
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <h:head>
+        <title>Puxador</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <b:form id="formPux">
+            <p:commandButton value="Cadastrar" oncomplete="$('.modalCad').modal('show')" ajax='true' update=":modalCadastro" action="#{puxadorController.clearSelection()}"/>
+
+            <b:dataTable var="item" value="#{puxadorController.readAllPuxador()}">
+
+                <b:dataTableColumn value="#{item.codigo}"/>
+                <b:dataTableColumn value="#{item.CPF}"/>
+
+                <b:dataTableColumn value="#{item.nome}"/>
+                <b:dataTableColumn value="#{item.telefone}"/>
+                <b:dataTableColumn value="#{item.quantidade_prisoes}"/>
+
+                <b:dataTableColumn label="Operações">
+                    <b:panelGrid columns="3" style="width: 100px">
+                        <p:commandButton icon="glyphicon glyphicon-search" oncomplete=" $('.modalVisual').modal('show')"
+                                         update="@(.modalVisual)" ajax="true" >
+                            <f:setPropertyActionListener value="#{item}" target="#{puxadorController.selPuxador}"/>
+                        </p:commandButton>
+
+                        <p:commandButton icon="glyphicon glyphicon-pencil" oncomplete="$('.modalCad').modal('show')"
+                                         update=":modalCadastro" ajax="true">
+                            <f:setPropertyActionListener value="#{item}" target="#{puxadorController.selPuxador}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="glyphicon glyphicon-remove" action="#{puxadorController.deletar()}" 
+                                         update=":formPux">
+                            <f:setPropertyActionListener value="#{item}" target="#{puxadorController.selPuxador}"/>
+                            <p:confirm message="Tem certeza que deseja deletar?"/>
+                        </p:commandButton>
+                    </b:panelGrid>
+                </b:dataTableColumn>
+
+
+
+            </b:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            </p:confirmDialog>
+        </b:form>
+
+        <b:modal id="modalCadastro" style-class="modalCad"
+                 title="#{(puxadorController.selPuxador eq null)?'Cadastro de':'Altere os dados do'} puxador">
+
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <c:choose>
+                        <c:when test="#{puxadorController.selPuxador eq null}">
+                            <h:outputText value="CPF(Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.puxador.CPF}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Nome"/>
+                            <h:inputText value="#{puxadorController.puxador.nome}"/>
+
+                            <h:outputText value="Sobrenome"/>
+                            <h:inputText value="#{puxadorController.puxador.sobrenome}"/>
+
+                            <h:outputText value="Telefone(Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.puxador.telefone}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Endereço"/>
+                            <h:inputText value="#{puxadorController.puxador.endereço}"/>
+
+                            <h:outputText value="Endereço da Mãe"/>
+                            <h:inputText value="#{puxadorController.puxador.endereço_mae}"/>
+
+                            <h:outputText value="Quantidade de prisões (Only numbers)"/>
+                            <h:inputText value="#{puxadorController.puxador.quantidade_prisoes}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Especialidade de roubo"/>
+                            <h:inputText value="#{puxadorController.puxador.especialidade_roubo}"/>
+
+                            <h:outputText value="Anos de Experiência (Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.puxador.anos_experiência}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+                            
+                            <b:commandButton value="Cadastrar" 
+                                             action="#{puxadorController.inserir()}"
+                                             />
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="CPF(Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.selPuxador.CPF}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Nome"/>
+                            <h:inputText value="#{puxadorController.selPuxador.nome}"/>
+
+                            <h:outputText value="Sobrenome"/>
+                            <h:inputText value="#{puxadorController.selPuxador.sobrenome}"/>
+
+                            <h:outputText value="Telefone(Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.selPuxador.telefone}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Endereço"/>
+                            <h:inputText value="#{puxadorController.selPuxador.endereço}"/>
+
+                            <h:outputText value="Endereço da Mãe"/>
+                            <h:inputText value="#{puxadorController.selPuxador.endereço_mae}"/>
+
+                            <h:outputText value="Quantidade de prisões (Only numbers)"/>
+                            <h:inputText value="#{puxadorController.selPuxador.quantidade_prisoes}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <h:outputText value="Especialidade de roubo"/>
+                            <h:inputText value="#{puxadorController.selPuxador.especialidade_roubo}"/>
+
+                            <h:outputText value="Anos de Experiência (Only Numbers)"/>
+                            <h:inputText value="#{puxadorController.selPuxador.anos_experiência}" onkeypress=" if (event.which &lt; 48 || event.which &gt; 57) return false;"/>
+
+                            <b:commandButton value="Alterar" 
+                                             action="#{puxadorController.alterar()}"
+                                             />
+                        </c:otherwise>
+                    </c:choose>
+
+                </b:panelGrid>
+
+                <b:button value="cancelar" dismiss="modal"/>
+
+            </b:form>
+
+        </b:modal>
+
+        <b:modal id="modalVisualiza" style-class="modalVisual" title="Dados do Puxador">
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <h:outputText value="CPF(Only Numbers)"/>
+                    <h:outputText value="#{puxadorController.selPuxador.CPF}"/>
+
+                    <h:outputText value="Nome"/>
+                    <h:outputText value="#{puxadorController.selPuxador.nome}"/>
+
+                    <h:outputText value="Sobrenome"/>
+                    <h:outputText value="#{puxadorController.selPuxador.sobrenome}"/>
+
+                    <h:outputText value="Telefone(Only Numbers)"/>
+                    <h:outputText value="#{puxadorController.selPuxador.telefone}"/>
+                    <h:outputText value="Endereço"/>
+                    <h:outputText value="#{puxadorController.selPuxador.endereço}"/>
+
+                    <h:outputText value="Endereço da Mãe"/>
+                    <h:outputText value="#{puxadorController.selPuxador.endereço_mae}"/>
+
+                    <h:outputText value="Quantidade de prisões (Only numbers)"/>
+                    <h:outputText value="#{puxadorController.selPuxador.quantidade_prisoes}"/>
+
+                    <h:outputText value="Especialidade de roubo"/>
+                    <h:outputText value="#{puxadorController.selPuxador.especialidade_roubo}"/>
+
+                    <h:outputText value="Anos de Experiência (Only Numbers)"/>
+                    <h:outputText value="#{puxadorController.selPuxador.anos_experiência}"/>
+
+                </b:panelGrid>
+                <b:button value="fechar" dismiss="modal"/>
+            </b:form>
+        </b:modal>
+
+    </h:body>
+</html>

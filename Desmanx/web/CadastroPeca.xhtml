@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastro Peça</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <h:form id="formCadPeça">
+            
+            <p:fieldset legend="Cadastro Peça">
+                
+                <p:panelGrid columns="2">
+               
+                    <h:outputText value="Nome"/>
+                    <h:inputText value="#{peçaController.peça.nome}"/>
+                    
+                    <h:outputText value="Função"/>
+                    <p:inputText  value="#{peçaController.peça.funcao}"/>
+                    
+                    <h:outputText value="Tipo"/>
+                    <p:inputText  value="#{peçaController.peça.tipo}"/>
+                    
+                    <h:outputText value="Observacao"/>
+                    <p:inputText value="#{peçaController.peça.obs}" />
+                    
+                </p:panelGrid>
+                
+                <p:commandButton value="Cadastrar" 
+                                 oncomplete="PF('widConfPeça').show()"
+                                 />
+                
+            </p:fieldset>
+           
+            <p:dialog id="confCadPeça" modal="true"
+                      widgetVar="widConfPeça">
+                <h:outputText value="Deseja realmente cadastrar esta peça?!"/><br/>
+                <p:commandButton value="sim" action="#{peçaController.inserir()}" 
+                                 oncomplete="PF('widConfPeça').hide()" update=':formCadPeça'/>
+                <p:commandButton value="não" oncomplete="PF('widConfPeça').hide()"/>
+            </p:dialog>
+            
+        </h:form>
+    </h:body>
+</html>

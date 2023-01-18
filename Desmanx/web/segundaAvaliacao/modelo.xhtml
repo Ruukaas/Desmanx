@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <h:head>
+        <title>Modelo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <b:form id="formMod">
+            <p:commandButton value="Cadastrar" oncomplete="$('.modalCad').modal('show')" ajax='true' update=":modalCadastro" action="#{modeloController.clearSelection()}"/>
+
+            <b:dataTable var="item" value="#{modeloController.readAllModelo()}" >
+                <b:dataTableColumn value="#{item.codigo}"/>
+                <b:dataTableColumn value="#{item.nome}"/>
+
+                <b:dataTableColumn value="#{item.fabricante}"/>
+                <b:dataTableColumn value="#{item.tipo}"/>
+                <b:dataTableColumn value="#{item.cilindrada_motor}"/>
+
+                <b:dataTableColumn label="Operações">
+                    <b:panelGrid columns="3" style="width: 100px">
+                        <p:commandButton icon="glyphicon glyphicon-search" oncomplete=" $('.modalVisual').modal('show')"
+                                         update="@(.modalVisual)" ajax="true" >
+                            <f:setPropertyActionListener value="#{item}" target="#{modeloController.selModelo}" />           
+                        </p:commandButton>
+
+                        <p:commandButton icon="glyphicon glyphicon-pencil" oncomplete="$('.modalCad').modal('show')"
+                                         update=":modalCadastro" ajax="true">
+                            <f:setPropertyActionListener value="#{item}" target="#{modeloController.selModelo}" />           
+                        </p:commandButton>
+                        <p:commandButton icon="glyphicon glyphicon-remove" action="#{modeloController.deletar()}" update=":formMod">
+                            <f:setPropertyActionListener value="#{item}" target="#{modeloController.selModelo}" />              
+                            <p:confirm message="Tem certeza que deseja deletar?"/>
+                        </p:commandButton>
+                    </b:panelGrid>
+                </b:dataTableColumn>
+
+
+
+            </b:dataTable>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="sim" type="button" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            </p:confirmDialog>
+        </b:form>
+
+        <b:modal id="modalCadastro" style-class="modalCad" title="#{(modeloController.selModelo eq null) ? 'Cadastro de': 'Altere dados do'} modelo">
+
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <c:choose>
+                        <c:when test="#{modeloController.selModelo eq null}">                       
+                            <h:outputText value="Nome"/>
+                            <h:inputText value="#{modeloController.modelo.nome}"/>
+
+                            <h:outputText value="Fabricante"/>
+                            <p:inputText  value="#{modeloController.modelo.fabricante}"/>
+
+                            <h:outputText value="Tipo"/>
+                            <p:inputText  value="#{modeloController.modelo.tipo}"/>
+
+                            <h:outputText value="Potencia do Motor"/>
+                            <p:inputText value="#{modeloController.modelo.potencia_Motor}" />
+
+                            <h:outputText value="Cilindrada do Motor"/>
+                            <p:inputText value="#{modeloController.modelo.cilindrada_motor}" />
+                            <b:commandButton value="Cadastrar" action="#{modeloController.inserir()}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="Nome"/>
+                            <h:inputText value="#{modeloController.selModelo.nome}"/>
+
+                            <h:outputText value="Fabricante"/>
+                            <p:inputText  value="#{modeloController.selModelo.fabricante}"/>
+
+                            <h:outputText value="Tipo"/>
+                            <p:inputText  value="#{modeloController.selModelo.tipo}"/>
+
+                            <h:outputText value="Potencia do Motor"/>
+                            <p:inputText value="#{modeloController.selModelo.potencia_Motor}" />
+
+                            <h:outputText value="Cilindrada do Motor"/>
+                            <p:inputText value="#{modeloController.selModelo.cilindrada_motor}" />
+                            <b:commandButton value="Alterar" action="#{modeloController.alterar()}" />
+                        </c:otherwise>
+                    </c:choose>
+
+                </b:panelGrid>
+
+                <b:button value="cancelar" dismiss="modal"/>
+
+            </b:form>
+
+        </b:modal>
+
+        <b:modal id="modalVisualiza" style-class="modalVisual" title="Dados do modelo">
+            <b:form>
+                <b:panelGrid columns="2">
+
+                    <h:outputText value="Nome"/>
+                    <h:outputText value="#{modeloController.selModelo.nome}"/>
+
+                    <h:outputText value="Fabricante"/>
+                    <h:outputText  value="#{modeloController.selModelo.fabricante}"/>
+
+                    <h:outputText value="Tipo"/>
+                    <h:outputText  value="#{modeloController.selModelo.tipo}"/>
+
+                    <h:outputText value="Potencia do Motor"/>
+                    <h:outputText value="#{modeloController.selModelo.potencia_Motor}" />
+
+                    <h:outputText value="Cilindrada do Motor"/>
+                    <h:outputText value="#{modeloController.selModelo.cilindrada_motor}" />
+                </b:panelGrid>
+
+                <b:button value="fechar" dismiss="modal"/>
+            </b:form>
+        </b:modal>
+
+    </h:body>
+</html>

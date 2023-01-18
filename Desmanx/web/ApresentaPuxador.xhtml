@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Apresenta Puxador</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <h:form id="formApresentaPuxador">
+
+            <p:dataTable id="tblPuxador" var="item" 
+                         value="#{puxadorController.readAllPuxador()}"
+                         paginator="true" rows="4" selectionMode="single"
+                         selection="#{puxadorController.selPuxador}"
+                         rowKey="#{item.codigo}">
+
+                <p:column headerText="Código">
+                    #{item.codigo}
+                </p:column>
+                <p:column headerText="CPF">
+                    #{item.CPF}
+                </p:column>
+                <p:column headerText="Nome">
+                    #{item.nome}
+                </p:column>
+                <p:column headerText="Sobrenome">
+                    #{item.sobrenome}
+                </p:column>
+                <p:column headerText="Telefone">
+                    #{item.telefone}
+                </p:column>
+                <p:column headerText="Endereço">
+                    #{item.endereço}
+                </p:column>
+                <p:column headerText="Endereço da Mãe">
+                    #{item.endereço_mae}
+                </p:column>
+                <p:column headerText="Quantiade de Prisões">
+                    #{item.quantidade_prisoes}
+                </p:column>
+                <p:column headerText="Especialidade de roubo">
+                    #{item.especialidade_roubo}
+                </p:column>
+                <p:column headerText="Anos de Experiencia">
+                    #{item.anos_experiência}
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="alterar" action='AlteraPuxador'/>
+
+            <p:commandButton value="deletar" action="#{puxadorController.deletar()}"
+                             update=":formApresentaPuxador">
+                <p:confirm message="Deseja relamente deletar isso aí!"/>
+            </p:commandButton>
+
+        </h:form>
+
+        <p:confirmDialog global='true'>
+            <h:form>
+                <p:commandButton value="sim" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="não" styleClass="ui-confirmdialog-no"/>
+            </h:form>
+        </p:confirmDialog>
+    </h:body>
+</html>
